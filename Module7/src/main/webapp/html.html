@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <style>
+    /* Styling for the page */
+    body {
+      background-color: #e1f5fe;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Styling for the input field */
+    input[type="text"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    /* Styling for the button */
+    button {
+      padding: 10px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    /* Styling for the list items */
+    li {
+      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Styling for completed tasks */
+    li.completed {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    /* Styling for the title */
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      padding: 20px;
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+<h1>To-Do List</h1>
+
+<!-- Form for adding new to-do items -->
+<form>
+  <label for="todo">Add a new to-do item:</label><br>
+  <input type="text" id="todo" name="todo" placeholder="Enter a task...">
+  <br>
+  <label for="color">Select a color for the task:</label><br>
+  <input type="color" id="color" name="color">
+  <br>
+  <button type="button" onclick="addItem()">Add Item</button>
+  <button type="button" onclick="clearList()">Clear List</button>
+</form>
+
+<!-- List for displaying to-do items -->
+<ul id="todo-list"></ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.0/purify.min.js" integrity="sha384-EAdZnV05QeAIoZ86+oIWeFfs81nybhjKfJfyb7Mcev+8ZImJhRfvemTgTtV2QsIy" crossorigin="anonymous"></script>
+<script>
+  function addItem() {
+    // Get the user input values and sanitize them
+    const todoInput = DOMPurify.sanitize(document.getElementById("todo").value.trim());
+    const colorInput = DOMPurify.sanitize(document.getElementById("color").value);
+
+    // Check if the input value is empty
+    if (!todoInput) {
+      alert("Please enter a task!");
+      return;
+    }
+
+    // Create a new list item with the user input values
+    const newItem = document.createElement("li");
+    newItem.innerText = todoInput;
+    newItem.style.backgroundColor = colorInput;
+
+    // Add event listeners for completing tasks
+    newItem.addEventListener("click", toggleCompleted);
+
+    // Add the new item to the list
+    const todoList = document.getElementById("todo-list");
+    todoList.appendChild(newItem);
+
+    // Reset the form inputs
+    document.getElementById("todo").value = "";
+    document.getElementById("color").value = "#000000";
+  }
+
+  function toggleCompleted() {
+  // Toggle the completed class on the clicked list
